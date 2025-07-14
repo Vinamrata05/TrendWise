@@ -16,6 +16,7 @@ interface Article {
     media?: {
         images?: string[];
     };
+    coverImage?: string;
 }
 
 interface Comment {
@@ -49,6 +50,8 @@ export default function ArticlePage() {
                 );
 
                 setArticle(articleResponse.data);
+
+                console.log("Cover image URL:", articleResponse.data.coverImage);
 
                 // Fetch comments for this article
                 const commentsResponse = await axios.get(
@@ -143,17 +146,6 @@ export default function ArticlePage() {
                     <span className="mx-2">•</span>
                     <span>{formatDate(article.publishedAt)}</span>
                 </div>
-
-                {article.media?.images && article.media.images.length > 0 && (
-                    <div className="mb-8">
-                        <img
-                            src={article.media.images[0]}
-                            alt={article.title}
-                            className="w-full h-auto rounded-lg"
-                            onError={handleImageError}
-                        />
-                    </div>
-                )}
 
                 <div
                     className="prose prose-lg max-w-none mb-12"

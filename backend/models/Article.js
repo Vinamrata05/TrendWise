@@ -23,6 +23,10 @@ const articleSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  coverImage: {
+    type: String,
+    trim: true
+  },
   meta: {
     title: {
       type: String,

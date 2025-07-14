@@ -12,7 +12,7 @@ interface Article {
   excerpt: string;
   publishedAt: string;
   media?: {
-    images?: string[];
+    images?: { url: string; alt: string; caption: string }[];
   };
 }
 
@@ -95,24 +95,24 @@ export default function Home() {
               key={article._id}
               className="group"
             >
-              <div className="border rounded-lg overflow-hidden h-full flex flex-col hover:shadow-md transition-shadow">
-                {article.media?.images && article.media.images.length > 0 ? (
-                  <img
-                    src={article.media.images[0]}
-                    alt={article.title}
-                    className="h-48 w-full object-cover"
-                    onError={handleImageError}
-                  />
-                ) : (
-                  <div className="h-48 w-full bg-muted flex items-center justify-center text-muted-foreground">
-                    No image available
-                  </div>
-                )}
-                <div className="p-4 flex flex-col flex-1">
-                  <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+              <div className="border rounded-lg overflow-hidden h-100 flex flex-col hover:shadow-md transition-shadow">
+                <div className="aspect-[4/3] w-full bg-muted flex items-center justify-center rounded-t-lg overflow-hidden">
+                  {article.media?.images && article.media.images.length > 0 ? (
+                    <img
+                      src={article.media.images[0].url}
+                      alt={article.media.images[0].alt || article.title}
+                      className="w-full h-full object-cover"
+                      onError={handleImageError}
+                    />
+                  ) : (
+                    <span className="text-muted-foreground">No image available</span>
+                  )}
+                </div>
+                <div className="p-2 flex flex-col flex-1 justify-between">
+                  <h2 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors truncate">
                     {article.title}
                   </h2>
-                  <p className="text-muted-foreground mb-4 flex-1">
+                  <p className="text-muted-foreground mb-2 flex-1 line-clamp-2">
                     {article.excerpt}
                   </p>
                   <p className="text-sm text-muted-foreground">

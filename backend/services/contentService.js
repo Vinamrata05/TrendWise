@@ -229,12 +229,19 @@ Make sure the content is original, engaging, and provides real value to readers.
       const contentMatch = content.match(/CONTENT:\s*([\s\S]*?)(?=\nMEDIA:|$)/i);
       let articleContent = contentMatch ? contentMatch[1].trim() : content;
 
+    articleContent = await replaceWithUnsplashImages(articleContent, topic);
+
       // Extract the first <img> src as cover image
       let coverImage = '';
       const imgMatch = articleContent.match(/<img[^>]+src=["']([^"']+)["']/i);
       if (imgMatch && !shouldExcludeImage(imgMatch[1])) {
         coverImage = imgMatch[1];
       }
+
+      //testing
+      console.log("📸 Cover Image Match:", imgMatch ? imgMatch[1] : 'No match');
+      console.log("✅ Final Cover Image:", coverImage);
+
 
       // Extract MEDIA section
       const mediaMatch = content.match(/MEDIA:\s*([\s\S]*)$/i);
@@ -338,7 +345,8 @@ Make sure the content is original, engaging, and provides real value to readers.
           // );
         }
       }
-      articleContent = await replaceWithUnsplashImages(articleContent, topic);
+      
+      // articleContent = await replaceWithUnsplashImages(articleContent, topic);
 
       // Generate slug from title
       const slug = this.generateSlug(title);
@@ -353,6 +361,7 @@ Make sure the content is original, engaging, and provides real value to readers.
         slug,
         excerpt: metaDescription,
         content: articleContent,
+        coverImage,
         meta: {
           title: title.length > 60 ? title.substring(0, 57) + '...' : title,
           description: metaDescription,
